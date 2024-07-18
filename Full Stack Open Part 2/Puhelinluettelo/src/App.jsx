@@ -47,7 +47,7 @@ const PersonForm = ({setNewName, setNewNumber, persons, setPersons, newName, new
     const newPerson = {
       name: newName,
       number: newNumber,
-      id: String(persons.length + 1),
+      id: String(Math.floor(Math.random()*10000)),
     }
     const isNameExists = persons.some(person => person.name === newName);
     if (isNameExists) {
@@ -70,7 +70,7 @@ const PersonForm = ({setNewName, setNewNumber, persons, setPersons, newName, new
         setTimeout(() => {
           setErrorMessage(null)
         }, 5000)
-        setPersons(persons.concat(newPerson));
+        setPersons(persons.concat({...newPerson, id: response.data.id}));
         setNewName('');
         setNewNumber('');
       });
