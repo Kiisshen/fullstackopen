@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react'
 import api from './services/api.js'
 import './style/app.css'
 
-// TEKEMÄTTÄ 2.17-2.20
-
 const Filter = ({filter, setFilt}) => {
   const handleFilterChange = (e) => {
     e.preventDefault()
@@ -96,9 +94,9 @@ const PersonForm = ({setNewName, setNewNumber, persons, setPersons, newName, new
       console.log(error.response)
       setErrorMessage(error.response.data.error)
       setIsError(true)
-        setTimeout(() => {
-          setErrorMessage(null)
-        }, 5000)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
     });
     }
   }
