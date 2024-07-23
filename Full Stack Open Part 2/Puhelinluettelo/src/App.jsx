@@ -93,6 +93,7 @@ const PersonForm = ({setNewName, setNewNumber, persons, setPersons, newName, new
         setNewNumber('');
       }
     ).catch((error) => {
+      console.log("moi")
       console.log(error.response)
       setErrorMessage(error.response.data.error)
       setIsError(true)
