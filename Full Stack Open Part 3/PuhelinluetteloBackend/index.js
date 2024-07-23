@@ -13,29 +13,6 @@ morgan.token('body', (req) => JSON.stringify(req.body))
 const customFormat = ':method :url :status :res[content-length] - :response-time ms :body'
 app.use(morgan(customFormat))
 
-let persons = [
-  {
-    'name': 'Arto Hellas',
-    'number': '040-123456',
-    'id': '1'
-  },
-  {
-    'name': 'Ada Lovelace',
-    'number': '39-44-5323523',
-    'id': '2'
-  },
-  {
-    'name': 'Dan Abramov',
-    'number': '12-43-234345',
-    'id': '3'
-  },
-  {
-    'name': 'Mary Poppendieck',
-    'number': '39-23-6423122',
-    'id': '4'
-  }
-]
-
 const errorHandler = (error, request, response, next) => {
   console.error(error.message)
   if (error.name === 'CastError') {
@@ -67,16 +44,6 @@ app.put('/api/persons/:id', (req, res, next) => {
 
 app.post('/api/persons', (req, res, next) => {
   const body = req.body
-  if (!body.name || !body.number) {
-    return res.status(400).json({
-      error: 'content missing'
-    })
-  }
-  if(persons.filter(person => person.name === body.name).length > 0){
-    return res.status(409).json({
-      error: 'name must be unique'
-    })
-  } // Kinda turha lohko koska ei hae tietokannasta nimiä
   const newPerson = new Person({
     name: body.name,
     number: body.number,
