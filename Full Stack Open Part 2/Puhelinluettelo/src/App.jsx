@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import api from './services/api.js'
 import './style/app.css'
 
@@ -73,6 +72,13 @@ const PersonForm = ({setNewName, setNewNumber, persons, setPersons, newName, new
           }, 5000)
           setNewName('');
           setNewNumber('');
+        }).catch((error) => {
+          console.log(error.response)
+          setErrorMessage(error.response.data.error)
+          setIsError(true)
+            setTimeout(() => {
+              setErrorMessage(null)
+            }, 5000)
         });
       }
     } else {
@@ -116,7 +122,7 @@ const PersonForm = ({setNewName, setNewNumber, persons, setPersons, newName, new
 const Persons = ({filtered, setPersons, persons, setErrorMessage, setIsError}) => {
   const handleRemove = (id, name) => {
     if(window.confirm("Delete "+name+"?")){
-      api.removeById(id).then(response => {
+      api.removeById(id).then(() => {
         setPersons(persons.filter((obj) => obj.id !== id))
         setErrorMessage("Removed "+name)
         setIsError(false)
