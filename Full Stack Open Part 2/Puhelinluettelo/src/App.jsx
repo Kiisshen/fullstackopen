@@ -88,11 +88,11 @@ const PersonForm = ({setNewName, setNewNumber, persons, setPersons, newName, new
       }
     ).catch((error) => {
       console.log(error.response)
-      setErrorMessage(error.response.data)
+      setErrorMessage(error.response.data.error)
       setIsError(true)
         setTimeout(() => {
           setErrorMessage(null)
-        }, 15000)
+        }, 5000)
     });
     }
   }
