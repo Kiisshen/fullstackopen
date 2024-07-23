@@ -19,19 +19,29 @@ const Filter = ({filter, setFilt}) => {
   )
 }
 
-const Notification = ({ message }) => {
+const Notification = ({ message, error }) => {
   if (message === null) {
     return null
   }
 
   return (
-    <div className="error">
-      {message}
-    </div>
+    <>{(error) ? (
+      <>
+        <div className="error-red">
+          {message}
+        </div>
+      </>) : (
+        <>
+          <div className="error">
+            {message}
+          </div> 
+        </>)}
+    </>
+      
   )
 }
 
-const PersonForm = ({setNewName, setNewNumber, persons, setPersons, newName, newNumber, setErrorMessage}) => {
+const PersonForm = ({setNewName, setNewNumber, persons, setPersons, newName, newNumber, setErrorMessage, setIsError}) => {
   const handleNameChange = (e) => {
     e.preventDefault()
     setNewName(e.target.value)
@@ -57,6 +67,7 @@ const PersonForm = ({setNewName, setNewNumber, persons, setPersons, newName, new
             person.id !== response.data.id ? person : response.data
           ));
           setErrorMessage("Updated "+newName)
+          setIsError(false)
           setTimeout(() => {
             setErrorMessage(null)
           }, 5000)
@@ -67,13 +78,22 @@ const PersonForm = ({setNewName, setNewNumber, persons, setPersons, newName, new
     } else {
       api.create(newPerson).then(response => {
         setErrorMessage("Added "+newName)
+        setIsError(false)
         setTimeout(() => {
           setErrorMessage(null)
-        }, 5000)
+        }, 5000),
         setPersons(persons.concat({...newPerson, id: response.data.id}));
         setNewName('');
         setNewNumber('');
-      });
+      }
+    ).catch((error) => {
+      console.log(error.response)
+      setErrorMessage(error.response.data)
+      setIsError(true)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 15000)
+    });
     }
   }
   return (
@@ -93,12 +113,13 @@ const PersonForm = ({setNewName, setNewNumber, persons, setPersons, newName, new
   )
 }
 
-const Persons = ({filtered, setPersons, persons, setErrorMessage}) => {
+const Persons = ({filtered, setPersons, persons, setErrorMessage, setIsError}) => {
   const handleRemove = (id, name) => {
     if(window.confirm("Delete "+name+"?")){
       api.removeById(id).then(response => {
         setPersons(persons.filter((obj) => obj.id !== id))
         setErrorMessage("Removed "+name)
+        setIsError(false)
         setTimeout(() => {
           setErrorMessage(null)
         }, 5000)
@@ -124,6 +145,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
+  const [isError, setIsError] = useState(false)
 
   const filtered = persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()));
 
@@ -136,7 +158,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-        <Notification message={errorMessage} />
+        <Notification message={errorMessage} error={isError}/>
         <Filter filter={filter} setFilt={setFilter}/>
       <h3>add a new</h3>
         <PersonForm 
@@ -144,6 +166,7 @@ const App = () => {
           setNewNumber={setNewNumber}
           setPersons={setPersons}
           setErrorMessage={setErrorMessage}
+          setIsError={setIsError}
           persons={persons}
           newName={newName}
           newNumber={newNumber}
@@ -154,6 +177,7 @@ const App = () => {
         setPersons={setPersons}
         persons={persons}
         setErrorMessage={setErrorMessage}
+        setIsError={setIsError}
       />
     </div>
   )

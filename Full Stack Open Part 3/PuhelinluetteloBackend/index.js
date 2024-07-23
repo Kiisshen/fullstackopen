@@ -63,7 +63,7 @@ let persons = [
     });
     
 
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
     const body = req.body
     if (!body.name || !body.number) {
         return res.status(400).json({ 
@@ -83,6 +83,7 @@ app.post('/api/persons', (req, res) => {
     newPerson.save().then(result => {
       res.json(newPerson)
     })
+    .catch((error) => next(error))
 })
 
 app.get('/api/persons', (req, res) => {
