@@ -21,16 +21,18 @@ const Notification = ({ message, error }) => {
     return null
   }
 
+  const displayMessage = typeof message === 'string' ? message : JSON.stringify(message);
+
   return (
     <>{(error) ? (
       <>
         <div className="error-red">
-          {message}
+          {displayMessage}
         </div>
       </>) : (
         <>
           <div className="error">
-            {message}
+            {displayMessage}
           </div> 
         </>)}
     </>
