@@ -24,6 +24,9 @@ const changeNumber = (name, newNumber) => {
           const updatedPerson = { ...person, number: newNumber };
           return axios.put(`${baseUrl}/${person.id}`, updatedPerson);
         }
+        else {
+          throw new Error(`Information of ${name} has already been removed from the server.`)
+        }
       });
 }
 
