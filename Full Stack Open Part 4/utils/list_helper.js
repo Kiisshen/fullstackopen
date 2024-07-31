@@ -11,8 +11,42 @@ const totalLikes = (blogs) => {
     }
     return likes
 }
+
+const favouriteBlog = (blogs) => {
+    let favourite = {
+        "likes": 0,
+        "title": "",
+        "author": ""
+    }
+    if(blogs){
+        blogs.forEach(element => {
+            if(element.likes > favourite.likes){
+                favourite.likes = element.likes
+                favourite.title = element.title
+                favourite.author = element.author
+            }
+            else if(favourite.title == "" || favourite.author == ""){
+                favourite.likes = element.likes
+                favourite.title = element.title
+                favourite.author = element.author
+            }
+        });
+    }
+    return favourite
+}
+
+const mostBlogs = (blogs) => {
+
+}
+
+const mostLikes = (blogs) => {
+
+}
   
 module.exports = {
     dummy,
-    totalLikes
+    totalLikes,
+    favouriteBlog,
+    mostBlogs,
+    mostLikes
 }
