@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const cors = require('cors')
@@ -10,7 +11,9 @@ const middleware = require('./utils/middleware')
 mongoose.set('strictQuery', false)
 logger.info('connecting to MongoDB')
 
-mongoose.connect(MONGOURL)
+const MONGODB_URI = process.env.NODE_ENV === 'test' ? process.env.MONGOURL_TEST : process.env.MONGOURL
+
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     logger.info('connected to MongoDB')
   })
