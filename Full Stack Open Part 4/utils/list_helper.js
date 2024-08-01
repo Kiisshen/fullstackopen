@@ -36,11 +36,59 @@ const favouriteBlog = (blogs) => {
 }
 
 const mostBlogs = (blogs) => {
+    const authorBlogCount = {};
 
+    if(!blogs){
+        return { author: "", blogs: 0}
+    }
+
+    blogs.forEach(blog => {
+        const author = blog.author;
+        if (authorBlogCount[author]) {
+            authorBlogCount[author]++;
+        } else {
+            authorBlogCount[author] = 1;
+        }
+    });
+
+    let maxBlogs = 0;
+    let authorWithMostBlogs = "";
+    for (const author in authorBlogCount) {
+        if (authorBlogCount[author] > maxBlogs) {
+            maxBlogs = authorBlogCount[author];
+            authorWithMostBlogs = author;
+        }
+    }
+
+    return { author: authorWithMostBlogs, blogs: maxBlogs };
 }
 
 const mostLikes = (blogs) => {
+    const authorLikeCount = {};
 
+    if(!blogs){
+        return { author: "", likes: 0}
+    }
+
+    blogs.forEach(blog => {
+        const author = blog.author;
+        if (authorLikeCount[author]) {
+            authorLikeCount[author] += blog.likes;
+        } else {
+            authorLikeCount[author] = blog.likes;
+        }
+    });
+
+    let maxLikes = 0;
+    let authorWithMostLikes = "";
+    for (const author in authorLikeCount) {
+        if (authorLikeCount[author] > maxLikes) {
+            maxLikes = authorLikeCount[author];
+            authorWithMostLikes = author;
+        }
+    }
+
+    return { author: authorWithMostLikes, likes: maxLikes };
 }
   
 module.exports = {
