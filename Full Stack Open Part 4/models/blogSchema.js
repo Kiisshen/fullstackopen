@@ -1,10 +1,25 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-const blogSchema = mongoose.Schema({
-    title: String,
-    author: String,
-    url: String,
-    likes: Number
-  })
+const blogSchema = new mongoose.Schema({
+  title: String,
+  author: String,
+  url: String,
+  likes: {
+    type: Number,
+    default: 0
+    }
+});
 
-module.exports = mongoose.model('Blog', blogSchema)
+blogSchema.virtual('id').get(function() {
+  return this._id.toHexString();
+});
+
+blogSchema.set('toJSON', {
+  virtuals: true,
+  transform: (doc, ret) => {
+    delete ret._id;
+    delete ret.__v;
+  }
+});
+
+module.exports = mongoose.model('Blog', blogSchema);
