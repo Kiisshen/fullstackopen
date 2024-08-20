@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const blogSchema = new mongoose.Schema({
   title: String,
@@ -6,20 +6,20 @@ const blogSchema = new mongoose.Schema({
   url: String,
   likes: {
     type: Number,
-    default: 0
-    }
+    default: 0,
+  },
 });
 
-blogSchema.virtual('id').get(function() {
+blogSchema.virtual("id").get(function () {
   return this._id.toHexString();
 });
 
-blogSchema.set('toJSON', {
+blogSchema.set("toJSON", {
   virtuals: true,
   transform: (doc, ret) => {
     delete ret._id;
     delete ret.__v;
-  }
+  },
 });
 
-module.exports = mongoose.model('Blog', blogSchema);
+module.exports = mongoose.model("Blog", blogSchema);

@@ -1,22 +1,22 @@
-const blogsRouter = require('express').Router()
-const Blog = require('../models/blogSchema')
+const blogsRouter = require("express").Router();
+const Blog = require("../models/blogSchema");
 
-blogsRouter.get('/', async (request, response) => {
-    const blogs = await Blog.find({})
-    response.json(blogs)
-  })
-  
-blogsRouter.post('/', async (request, response) => {
-    const {title, url} = request.body
+blogsRouter.get("/", async (request, response) => {
+  const blogs = await Blog.find({});
+  response.json(blogs);
+});
 
-    if(!title || !url){
-        return response.status(400).json({error: "title and url need to be set"})
-    }
+blogsRouter.post("/", async (request, response) => {
+  const { title, url } = request.body;
 
-    const blog = new Blog(request.body)
+  if (!title || !url) {
+    return response.status(400).json({ error: "title and url need to be set" });
+  }
 
-    result = await blog.save()
-    response.status(201).json(result)
-})
+  const blog = new Blog(request.body);
 
-module.exports = blogsRouter
+  result = await blog.save();
+  response.status(201).json(result);
+});
+
+module.exports = blogsRouter;
